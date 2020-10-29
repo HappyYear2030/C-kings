@@ -200,7 +200,6 @@ std::chrono::clocks：时间点相对于真实物理时间的框架。至少提�
 划分 :将满足某谓词的元素都放到前面 partition()
 将满足某谓词的元素都放到前面并维持原顺序 stable_partition()
 
-
 序列排序及相关操作（27个）:
 排序: 以很好的平均效率排序 sort()
 排序，并维持相同元素的原有顺序 stable_sort()
@@ -340,3 +339,154 @@ map 也可看做是 关键字映射的集合， 即，map中不可出现重复�
 
 ---
 
+# C++数组
+
+```
+double balance[5] = {1000.0, 2.0, 3.4, 7.0, 50.0};
+```
+
+```
+double balance[] = {1000.0, 2.0, 3.4, 7.0, 50.0};（ C和C++在定义数组时的差别 ）
+
+int a[];//这是错误的
+
+int i;/int i=3;
+int a[i];//这个写法也是错的
+也就是说静态数组必须有初值
+```
+
+---
+
+| 概念                                                         | 描述                                                         |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| [多维数组](https://www.runoob.com/cplusplus/cpp-multi-dimensional-arrays.html) | C++ 支持多维数组。多维数组最简单的形式是二维数组。           |
+| [指向数组的指针](https://www.runoob.com/cplusplus/cpp-pointer-to-an-array.html) | 您可以通过指定不带索引的数组名称来生成一个指向数组中第一个元素的指针。 |
+| [传递数组给函数](https://www.runoob.com/cplusplus/cpp-passing-arrays-to-functions.html) | 您可以通过指定不带索引的数组名称来给函数传递一个指向数组的指针。 |
+| **[从函数返回数组](https://www.runoob.com/cplusplus/cpp-return-arrays-from-function.html)** | **C++ 允许从函数返回数组。**（C和C++的差别）**               |
+
+---
+
+# C++字符串
+
+| 序号 | 函数 & 目的                                                  |
+| :--- | ------------------------------------------------------------ |
+| 1    | **strcpy(s1, s2);** 复制字符串 s2 到字符串 s1。              |
+| 2    | **strcat(s1, s2);** 连接字符串 s2 到字符串 s1 的末尾。       |
+| 3    | **strlen(s1);** 返回字符串 s1 的长度。                       |
+| 4    | **strcmp(s1, s2);** 如果 s1 和 s2 是相同的，则返回 0；如果 s1<s2 则返回值小于 0；如果 s1>s2 则返回值大于 0。 |
+| 5    | **strchr(s1, ch);** 返回一个指针，指向字符串 s1 中字符 ch 的第一次出现的位置。 |
+| 6    | **strstr(s1, s2);** 返回一个指针，指向字符串 s1 中字符串 s2 的第一次出现的位置。 |
+
+---
+
+# C++引用
+
+## C++ 引用 vs 指针
+
+**引用很容易与指针混淆，它们之间有三个主要的不同：**
+
+- **不存在空引用。引用必须连接到一块合法的内存**。
+- **一旦引用被初始化为一个对象，就不能被指向到另一个对象。指针可以在任何时候指向到另一个对象。**
+- **引用必须在创建时被初始化。指针可以在任何时间被初始化。**
+
+```
+int i = 9;
+int& r = i;
+cout << i <<end1;
+cout << r <<end1;
+---
+9
+9
+---
+```
+
+---
+
+# C++类，对象
+
+**类定义是以关键字 class 开头**
+
+```
+class name{//name为类名
+	public:
+		elemtype data1;
+		elemtype data2;
+		elemtype data3;
+		...
+};
+class name{//name为类名
+	public://公开
+		elemtype data1;
+	private://私有
+		elemtype data2;
+	protected://已受保护
+		elemtype data3;
+		...
+};
+int main(){
+	name NAME1;//定义一个NAME1类型变量，NAME1为对象
+	
+	NAME1.data1 = ...;//初始化NAME1变量中的成员
+	NAME2.data2 = ...;//初始化NAME1变量中的成员
+	NAME3.data3 = ...;//初始化NAME1变量中的成员
+			...
+}
+类的成员可以是函数
+```
+
+想要访问私有数据就必须在公开部分创建几个函数 返回私有成员需要一个函数，操作私有成员需要使用其他的公开函数；
+
+
+
+| 概念                                                         | 描述                                                         |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| [类成员函数](https://www.runoob.com/cplusplus/cpp-class-member-functions.html) | **类的成员函数是指那些把定义和原型写在类定义内部的函数，就像类定义中的其他变量一样。** |
+| [类访问修饰符](https://www.runoob.com/cplusplus/cpp-class-access-modifiers.html) | **类成员可以被定义为 public（公开）、private（秘密） 或 protected（保护）。默认情况下是定义为 private。** |
+| [构造函数 & 析构函数](https://www.runoob.com/cplusplus/cpp-constructor-destructor.html) | 类的构造函数是一种特殊的函数，在创建一个新的对象时调用。类的析构函数也是一种特殊的函数，在删除所创建的对象时调用。 |
+| [C++ 拷贝构造函数](https://www.runoob.com/cplusplus/cpp-copy-constructor.html) | 拷贝构造函数，是一种特殊的构造函数，它在创建对象时，是使用同一类中之前创建的对象来初始化新创建的对象。 |
+| [C++ 友元函数](https://www.runoob.com/cplusplus/cpp-friend-functions.html) | **友元函数**可以访问类的 private 和 protected 成员。         |
+| [C++ 内联函数](https://www.runoob.com/cplusplus/cpp-inline-functions.html) | 通过内联函数，编译器试图在调用函数的地方扩展函数体中的代码。 |
+| [C++ 中的 this 指针](https://www.runoob.com/cplusplus/cpp-this-pointer.html) | 每个对象都有一个特殊的指针 **this**，它指向对象本身。        |
+| [C++ 中指向类的指针](https://www.runoob.com/cplusplus/cpp-pointer-to-class.html) | 指向类的指针方式如同指向结构的指针。实际上，类可以看成是一个带有函数的结构。 |
+| [C++ 类的静态成员](https://www.runoob.com/cplusplus/cpp-static-members.html) | 类的数据成员和函数成员都可以被声明为静态的。                 |
+
+---
+
+# 函数后的括号
+
+```
+elemtype name(void){}//不接受任何类型
+elemtype name(int){}//只接受int类型
+...
+```
+
+# 用cout直接进行进制输出
+
+| 控制符                        | 作 用                                                        |
+| :---------------------------- | :----------------------------------------------------------- |
+| dec                           | 设置数值的基数为10                                           |
+| hex                           | 设置数值的基数为16                                           |
+| oct                           | 设置数值的基数为8                                            |
+| setfill(c)                    | 设置填充字符c，c可以是字符常量或字符变量                     |
+| setprecision(n)               | 设置浮点数的精度为n位。在以一般十进制小数形式输出时，n代表有效数字。在以fixed(固定小数位数)形式和 scientific(指数)形式输出时，n为小数位数 |
+| setw(n)                       | 设置字段宽度为n位                                            |
+| setiosflags( ios::fixed)      | 设置浮点数以固定的小数位数显示                               |
+| setiosftags( ios::scientific) | 设置浮点数以科学记数法(即指数形式)显示                       |
+| setiosflags( ios::left)       | 输出数据左对齐                                               |
+| setiosflags( ios::right)      | 输出数据右对齐                                               |
+| setiosflags( ios::skipws)     | 忽略前导的空格                                               |
+| setiosflags( ios::uppercase)  | 数据以十六进制形式输出时字母以大写表示                       |
+| setiosflags( ios::lowercase)  | 数据以十六进制形式输出时宇母以小写表示                       |
+| setiosflags(ios::showpos)     | 输出正数时给出“+”号                                          |
+
+当我们想对输出的数添加某些属性时可以在前面加(<< hex / oct / dec)(只用过这几个) 但是要注意的是他们会对后面的数据造成影响，比如说我们想要16进制输出，在数据前面加一个 << hex 后面的所有数据都会以16进制输出直到碰上下一个属性，就像 << oct;
+
+``` 
+cout << hex << a << b << ...<< oct
+```
+
+
+
+![image-20201029185109406](C:\Users\周志豪\AppData\Roaming\Typora\typora-user-images\image-20201029185109406.png)
+
+还有强制类型转换 a = 'G', cout << char(a+4);
