@@ -434,7 +434,7 @@ int main(){
 类的成员可以是函数
 ```
 
-想要访问私有数据就必须在公开部分创建几个函数 返回私有成员需要一个函数，操作私有成员需要使用其他的公开函数；
+想要访问私有数据就必须在公开部分创建几个函数 返回私有成员需要一个函数，操作私有成员需要使用其他的公开函数；就是说一个函数用来访问，一个函数用来修改，我们先在修改函数中定义该私有成员的值，再通过访问函数进行修改。
 
 
 
@@ -490,3 +490,45 @@ cout << hex << a << b << ...<< oct
 ![image-20201029185109406](C:\Users\周志豪\AppData\Roaming\Typora\typora-user-images\image-20201029185109406.png)
 
 还有强制类型转换 a = 'G', cout << char(a+4);
+
+# C++ 中有大量的函数用来操作以 null 结尾的字符串：
+
+<table><thead><tr><th>序号</th><th>函数</th><th align="right">功能</th></tr></thead><tbody><tr><td>1</td><td>strcpy(s1,s2)</td><td align="right">复制字符串 s2 到字符串 s1</td></tr><tr><td>2</td><td>strcat(s1,s2)</td><td align="right">连接字符串 s2 到字符串 s1 的末尾</td></tr><tr><td>3</td><td>strlen(s1)</td><td align="right">返回字符串 s1 的长度</td></tr><tr><td>4</td><td>strcmp(s1,s2)</td><td align="right">返回s1与s2的比较结果</td></tr><tr><td>5</td><td>strchr(s1,ch)</td><td align="right">返回一个指针，指向字符串s1中字符ch的第一次出现的位置</td></tr><tr><td>6</td><td>strstr(s1,s2)</td><td align="right">返回一个指针，指向字符串s1中s2的第一次出现的位置</td></tr></tbody></table>
+
+![image-20201103203905034](C:\Users\周志豪\AppData\Roaming\Typora\typora-user-images\image-20201103203905034.png)
+
+# string字符串遇到的一些问题
+
+这几天写C++在对字符串进行操作的时候总是会出现问题，但是现在终于发现了问题所在
+
+```
+一开始我在定义一个字符串数据的时候使用的是char data[];类型，就是C语言常用的方式，但是在C++面向对象中，类的成员有字符串类型，本来嘛，在C语言中操作字符串就很麻烦了，要用string，strcpy...函数才能完成对字符串的一系列操作，所以在C++类中的三种属性下就更麻烦了，总是报错，但幸运的是有string类型
+
+按照以往我们其实是没有字符串类型的，只不过是定义了一个字符数组再输出罢了，但是在C++中，我们使用的string就相当于字符串类型
+举个例子：
+C语言定义字符串：char data[]=".......";
+	就很不方便，操作起来更不方便
+	但是
+C++定义字符串：string data = ".......";
+
+相比之下C++更为简单快捷，不用再使用字符数组，更不用设置数组长度
+
+```
+
+|                 | **string**                                                   | **char\*、char[]**                                           |
+| --------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 头文件          | #include <string>                                            | 不需要                                                       |
+| 定义与初始化    | string s1("abc");string s2(s1);string s3(4, 's');//初始化为4个's' | char* a = "test";//数据存在静态存储区，不能修改char a[] = "test";//开辟数组再存储，可以修改char* a = new char[10];memset(a, '0', sizeof(char)*10); |
+| 相互转化        | char* p = "hello";string s(p);s = p;                         | string str("test");const char* p = str.data();//记得要加const或者强制类型转换成(char*)const char* p = str.c_str();char p[10];std::size_t length = str.copy(p,5,0);//从第0个开始复制5个，返回有效复制的数量，需要在p最后添加'\0'char * cstr = new char [str.length()+1];  std::strcpy (cstr, str.c_str());或者逐个复制 |
+| 实际大小        | str.size()                                                   | std::strlen(p)//#include <cstring>（C++写法）或者<string.h>（C写法） |
+| 容器大小        | str.capacity()                                               | 数组形式p[]，可以使用sizeof(p)来获得数组大小指针形式没有容器概念，除非是new的，对指针用sizeof将得到指针本身的大小，由系统位数决定 |
+| 倒置            | #include <algorithm> // std::reversestd::reverse(str.begin(),str.end()); | char* strrev(char* s);                                       |
+| 查找字符&字符串 | find//从头开始找 rfind//从尾开始找**这四个函数都有四种重载：**size_t find (const string& str, size_t pos = 0);//查找子string，默认从父string的第0个字符开始，如果要查找多个相似的，则可以将pos设置为上次查找到的+1 size_t find (const char* s, size_t pos = 0);//查找字符串，默认从0开始 size_t find (const char* s, size_t pos, size_type n);//同上，但只比较n个 size_t find (char c, size_t pos = 0);//比较字符。当然，形参初始化的值可能不一样，返回的都是地址索引，需要通过found!=std::string::npos判断是否有效。find_first_of find_last_offind_first_not_of find_last_not_of也有上面四种重载，不过这里是返回第一个出现、没有出现在子str的字符的索引。如std::string str ("look for non-alphabetic characters..."); std::size_t found = str.find_first_not_of("abcdefghijklmnopqrstuvwxyz ");将返回'-'的索引 | char* strchr(char* s, char c);//查找字符串s中首次出现字符c的位置，返回c位置的指针，如不存在返回NULLchar * strrchr(const char *str, int c);//查找字符倒数第一次出现的位置char *strstr(const char *s1,const char *s2);//查找第一次出现s2的位置，返回s2的位置指针，如不存在返回NULLchar *strrstr(const char *s1,const char *s2);//查找倒数第一个出现s2的位置int strspn(const char *s,const char *accept);`//作用同右侧`find_first_not_of。返回s中第一个没有在accept出现的字符的索引。通过两个for循环来实现int strcspn(const char *s,const char *reject);//范湖s中第一个在reject出现的字符的索引。 |
+| 大小写转换      | 两者都是不提供这个功能的，但是C++有两个库函数，头文件是#include <ctype.h>：int tolower ( int c );int toupper ( int c ); | 实现也很简单：int tolower(int c) {    if ((c >= 'A') && (c <= 'Z'))      return c + ('a' - 'A');    return c; } |
+| 比较字符串大小  | 一共五种重载形式int compare (const string& str); int compare (size_t pos, size_t len, const string& str); int compare (size_t pos, size_t len, const string& str, size_t subpos, size_t sublen); int compare (const char* s) const; int compare (size_t pos, size_t len, const char* s); int compare (size_t pos, size_t len, const char* s, size_t n);返回与右边一致，其中pos表示从str的第几个元素开始比较，一共比较len个字符，如果不够，则有多少比较多少。subpos、sublen是相对比较字符串而言的string重载了==、<等符号，可以直接用符号比较string没有提供不区分大小写的比较，感觉可以读取出数据后通过右侧的函数来进行比较。 | int strcmp(char* s1, char* s2);//区分字母大小写比较 当s1 < s2时，返回值<0； //对于第一个不相等的字符，s1对应的小于s2对应的，或者全相等，但是s1的字符数量少于s2的字符数量 当s1 = s2时，返回值=0；  当s1 > s2时，返回值>0。int stricmp(char* s1, char* s2);//不区分字母大小写int strncmp(char* s1, char* s2, int n);//只比较前n个字符，区分大小int strnicmp(char* s1, char* s2, int n);//之比较前n，不区分大小写 |
+| 数字转字符串    | 1、stringstream（多次使用需要使用clear()清除）int N = 10;stringstream ss;//#include <sstream>string str;ss << N;ss >> str;2、string = std::to_string(N)方法只需包含<string>头文件即可 | 1、使用sprintf：#include <stdio.h>char c[100]; int k=255; sprintf(c,"%d",k);//d是有符号10进制数，u是无符号10进制double a=123.321; sprintf(c,”%.3lf”,a);sprintf(c,"%x",k);//转换成16进制，如果想要大写的话可以用X，8进制是o //c包含"ff" c[0]='f' c[1]='f'2、itoa貌似跟平台有关，不建议使用。 |
+| 字符串转数字    | 1、N = stringToNum<int>(str);//需要#include <sstream>2、在<string>中实现的int stoi (const string& str, size_t* idx = 0, int base = 10);//idx返回第一个非数字的指针索引，base默认10进制long stol、unsigned long stoul、long long stoll、unsigned long long stoull、float stof、double stod、long double stold3、stringstream//#include <sstream>string a = "123.32";double res;stringstream ss;ss << a;ss >> res; | char a[10] = {"255"}; int b; sscanf(a,"%d",&b);char a[10] = {"ff"};//十六进制int b; sscanf(a,"%x",&b);char str[]=”123.321”;  double a;  sscanf(str,”%lf”,&a);另外也可以用atoi(),atol(),atof() |
+| 拷贝与合并      | char p[10];std::size_t length = str.copy(p,5,0);//从第0个开始复制5个，返回有效复制的数量，需要在p最后添加'\0'合并直接用+号即可或者用.append()string& append (const string& str); string& append (const string& str, size_t subpos, size_t sublen); string& append (const char* s); string& append (const char* s, size_t n); string& append (size_t n, char c); | char* strcpy(char* dest, char* src);//把从src地址开始且含有 ‘\0’结束符的字符串复制到以dest开始的地址空间。返回指向dest的指针。char* strncpy(char* dest, char* src, int size_tn);//复制n个，这个复制不保证NULL结尾，需要自己初始化。char* strcat(char* dest, char* src);//把src所指字符串添加到dest结尾处(覆盖dest结尾处的 ‘\0’)并添加 ‘\0’。返回指向dest的指针。且内存不可重叠。char* strncat(char* dest, char* src, int n);//部分合并用sprintf也行，但是效率不高。 |
+| 插入与替换      | string& insert (size_t pos, const string& str); string& insert (size_t pos, const string& str, size_t subpos, size_t sublen); string& insert (size_t pos, const char* s); string& insert (size_t pos, const char* s, size_t n); string& insert (size_t pos,  size_t n, char c); string& replace (size_t pos,     size_t len,     const string& str); string& replace (size_t pos,     size_t len,     const string& str,          size_t subpos, size_t sublen);    string& replace (size_t pos,     size_t len,     const char* s); string& replace (size_t pos,     size_t len,     const char* s, size_t n); string& replace (size_t pos,     size_t len,     size_t n, char c); | 不存在                                                       |
+| 字符串切割      | string substr (size_t pos = 0, size_t len = npos)：std::string str2 = str.substr (3,5);//返回str的第3个开始的5个元素。可以配合find函数来实现针对特殊元素的切割 | char* strtok (char* str,constchar* delimiters );//以delimiters中的每个字符作为分割符，将str剪切，返回一个个字符串。传入NULL时代表继续切割后续的。下面的程序预计输出hello boy this is heima。第二个参数可以是" ,\t\n\\"等。（其实就是将被切割的换成'\0'？待分割字符串的完整性会被破坏，而且线程不安全。具体分析请看[strtok的安全性探讨](https://blog.csdn.net/yishizuofei/article/details/78232946?locationNum=5&fps=1)）![img](https://img-blog.csdn.net/20180909162523165?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTM4MzQ1MjU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70) |
+| IO函数          | std::getline (std::cin,str,s);//这个不需要固定大小，但是速度慢，生成文件大。默认终止符是换行 | cin.get(arrayname,size,s)//读取size-1个字符，在末尾添加'\0'遇终止符停止，返回是否成功。读取玩指针指向终止符。s默认换行cin.getline(arrayname,size,s)//同上，只是指针指向终止符之后 |
