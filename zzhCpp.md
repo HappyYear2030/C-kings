@@ -516,3 +516,31 @@ C++定义字符串：string data = ".......";
 相比之下C++更为简单快捷，不用再使用字符数组，更不用设置数组长度
 
 ```
+
+# **继承中的特点**
+
+有public, protected, private三种继承方式，它们相应地改变了基类成员的访问属性。
+
+- 1.**public 继承：**基类 public 成员，protected 成员，private 成员的访问属性在派生类中分别变成：public, protected, private
+- 2.**protected 继承：**基类 public 成员，protected 成员，private 成员的访问属性在派生类中分别变成：protected, protected, private
+- 3.**private 继承：**基类 public 成员，protected 成员，private 成员的访问属性在派生类中分别变成：private, private, private
+
+但无论哪种继承方式，上面两点都没有改变：
+
+- 1.private 成员只能被本类成员（类内）和友元访问，不能被派生类访问；
+
+- 2.protected 成员可以被派生类访问。
+
+  
+
+![image-20201105204359863](C:\Users\周志豪\AppData\Roaming\Typora\typora-user-images\image-20201105204359863.png)
+
+# const
+
+​						const称为常量		*称为指针
+
+常量指针：常量的值不可以修改，指针的指向可以修改![image-20201106165010240](C:\Users\周志豪\AppData\Roaming\Typora\typora-user-images\image-20201106165010240.png)
+
+指针常量：指针的指向不可以修改，常量可以修改![Screenshot 2020_11_6 16_52_53](C:\Users\周志豪\Videos\Captures\Screenshot 2020_11_6 16_52_53.png)
+
+指针常量都修饰：都不可以改![指针常量都修饰](C:\Users\周志豪\Videos\Captures\指针常量都修饰.png)
