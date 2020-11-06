@@ -452,6 +452,25 @@ int main(){
 
 ---
 
+
+
+# 函数重载
+
+![image-20201106100126139](C:\Users\周志豪\AppData\Roaming\Typora\typora-user-images\image-20201106100126139.png)
+
+```
+void fun();
+void fun(elemtype1 data);
+void fun(elemtype2 data);
+void fun(elemtype3 data);
+void fun(elemtype data,elemtype data);
+void fun(elemtype1 data,elemtype2 data);
+void fun(elemtype2 data,elemtype1 data);
+...
+```
+
+
+
 # 函数后的括号
 
 ```
@@ -544,3 +563,15 @@ C++定义字符串：string data = ".......";
 指针常量：指针的指向不可以修改，常量可以修改![Screenshot 2020_11_6 16_52_53](C:\Users\周志豪\Videos\Captures\Screenshot 2020_11_6 16_52_53.png)
 
 指针常量都修饰：都不可以改![指针常量都修饰](C:\Users\周志豪\Videos\Captures\指针常量都修饰.png)
+
+
+
+# C++ 类构造函数 & 析构函数
+
+![image-20201106094655152](C:\Users\周志豪\AppData\Roaming\Typora\typora-user-images\image-20201106094655152.png)
+## 类的构造函数
+
+类的**构造函数**是类的一种特殊的成员函数，它会在每次创建类的新对象时执行。默认的构造函数没有任何参数，但如果需要，构造函数也可以带有参数。这样在创建对象时就会给对象赋初始值。
+## 类的析构函数
+
+类的**析构函数**是类的一种特殊的成员函数，它会在每次删除所创建的对象时执行。析构函数的名称与类的名称是完全相同的，只是在前面加了个波浪号（~）作为前缀，它不会返回任何值，也不能带有任何参数。析构函数有助于在跳出程序（比如关闭文件、释放内存等）前释放资源。
