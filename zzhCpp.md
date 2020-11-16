@@ -510,6 +510,29 @@ cout << hex << a << b << ...<< oct
 
 还有强制类型转换 a = 'G', cout << char(a+4);
 
+---
+
+# cin  cin.getline  getline一些说明
+
+1、cin就相当于普通的输入，但是cin不接收**“空格”、“TAB”、“回车”**，遇到了就	结束。
+
+2、cin.getline();这是一个函数	接收一个**字符串**，可以接收**空格**并输出。（试了一下好像不行）
+
+3、getline();	接收一个字符串，可以接收空格并输出，需**包含“#include<string>”**。也就是说前面两个不需要包含这个string。
+
+注意：
+
+1、cin.getline()属于istream流，而getline()属于string流，是不一样的两个函数.
+
+2、当同时使用 cin>> , getline() 时，需要注意的是，在cin>>输入流完成之后，getline()之前，需要通过
+
+str="\n";
+getline(cin,str);
+
+的方式将回车符作为输入流cin以清除缓存，如果不这样做的话，在控制台上就不会出现getline()的输入提示，而直接跳过，因为程序默认地将之前的变量作为输入流。
+
+---
+
 # C++ 中有大量的函数用来操作以 null 结尾的字符串：
 
 <table><thead><tr><th>序号</th><th>函数</th><th align="right">功能</th></tr></thead><tbody><tr><td>1</td><td>strcpy(s1,s2)</td><td align="right">复制字符串 s2 到字符串 s1</td></tr><tr><td>2</td><td>strcat(s1,s2)</td><td align="right">连接字符串 s2 到字符串 s1 的末尾</td></tr><tr><td>3</td><td>strlen(s1)</td><td align="right">返回字符串 s1 的长度</td></tr><tr><td>4</td><td>strcmp(s1,s2)</td><td align="right">返回s1与s2的比较结果</td></tr><tr><td>5</td><td>strchr(s1,ch)</td><td align="right">返回一个指针，指向字符串s1中字符ch的第一次出现的位置</td></tr><tr><td>6</td><td>strstr(s1,s2)</td><td align="right">返回一个指针，指向字符串s1中s2的第一次出现的位置</td></tr></tbody></table>
@@ -575,3 +598,65 @@ C++定义字符串：string data = ".......";
 ## 类的析构函数
 
 类的**析构函数**是类的一种特殊的成员函数，它会在每次删除所创建的对象时执行。析构函数的名称与类的名称是完全相同的，只是在前面加了个波浪号（~）作为前缀，它不会返回任何值，也不能带有任何参数。析构函数有助于在跳出程序（比如关闭文件、释放内存等）前释放资源。
+
+# 文件的打开和关闭
+
+| 模式标志   | 描述 ( C++ )                                                 |
+| :--------- | :----------------------------------------------------------- |
+| ios::app   | 追加模式。所有写入都追加到文件末尾。                         |
+| ios::ate   | 文件打开后定位到文件末尾。                                   |
+| ios::in    | 打开文件用于读取。                                           |
+| ios::out   | 打开文件用于写入。                                           |
+| ios::trunc | 如果该文件已经存在，其内容将在打开文件之前被截断，即把文件长度设为 0。 |
+
+## C++fstream输入输出流
+
+ 头文件：#include<fstream>包含了：<ofstream>(写入) , <ifstream>(读出)
+
+```
+输入流：
+ofstream outfile;//以只写的模式打开文件
+outfile.open("dataname.type");//打开文件
+elemtype data[MAXSIZE];//定义	
+cin.getline(data,MAXSIZE);//输入
+outfile << data << endl ;//把输入的东西装到文件里去 所以这个data							像一个中继站
+cin.ignore();//清除缓存区
+outfile.close();//关闭打开的文件夹
+
+输出流：（类似上面）
+ifstream infile;//以只读的模式打开文件
+infile.open("dataname.type");//打开文件
+infile >> data;//读取
+cout << data ;//打印
+infile.close();//关闭打开的这个文件夹
+
+return 0;
+```
+
+
+
+> [参考(C++)](https://www.cnblogs.com/codingmengmeng/p/5545042.html)
+>
+> [菜鸟参考(C )](https://www.runoob.com/cprogramming/c-file-io.html)
+>
+> [菜鸟参考(C++ )](https://www.runoob.com/cplusplus/cpp-files-streams.html)
+
+## C语言**fopen(文件名,使用文件方式);**
+
+```
+FILE *fp;
+fp = fopen("name","r");
+name:表示文件名
+r:read 表示读入
+返回值是指向name指针保存的首地址
+```
+
+![image-20201116162955447](C:\Users\周志豪\AppData\Roaming\Typora\typora-user-images\image-20201116162955447.png)
+
+![image-20201116164230161](C:\Users\周志豪\AppData\Roaming\Typora\typora-user-images\image-20201116164230161.png)
+
+![image-20201116164336203](C:\Users\周志豪\AppData\Roaming\Typora\typora-user-images\image-20201116164336203.png)
+
+![image-20201116085056656](C:\Users\周志豪\AppData\Roaming\Typora\typora-user-images\image-20201116085056656.png)
+
+![image-20201116085456602](C:\Users\周志豪\AppData\Roaming\Typora\typora-user-images\image-20201116085456602.png)
